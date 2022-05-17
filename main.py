@@ -14,19 +14,19 @@ import wandb
 import math
 import numpy as np
 
-#Settings
+#inställningar
 nsamples = 1000     # Number of samples to use as a dataset
 val_ratio = 0.2     # Percentage of samples that should be held for validation set
 test_ratio = 0.2    # Percentage of samples that should be held for test set
 tflite_model_name = 'sine_model'  # Will be given .tflite suffix
 c_model_name = 'sine_model'       # Will be given .h suffix
 
-# Generate some random samples
+# Generera några slumpmässiga prover
 np.random.seed(1234)
 x_values = np.random.uniform(low=0, high=(2 * math.pi), size=nsamples)
 plt.plot(x_values)
 
-# Create a noisy sinewave with these values #####
+# Skapa en brusig sinusvåg med dessa värden 
 y_values = np.sin(x_values) + (0.1 * np.random.randn(x_values.shape[0]))
 plt.plot(x_values, y_values, '.')
 
@@ -36,7 +36,7 @@ test_split = int(val_split + (test_ratio * nsamples))
 x_val, x_test, x_train = np.split(x_values, [val_split, test_split])
 y_val, y_test, y_train = np.split(y_values, [val_split, test_split])
 
-# Check that our splits add up correctly
+# Kontrollera att våra uppdelningar summerar korrekt
 assert(x_train.size + x_val.size + x_test.size) == nsamples
 
 # Plot the data in each partition in different colors:
@@ -54,7 +54,7 @@ model.add(layers.Dense(16, activation='relu', input_shape=(1,)))
 model.add(layers.Dense(16, activation='relu'))
 model.add(layers.Dense(1))
 
-# View model
+# Visa modell
 model.summary()
 
 # Add optimizer, loss function, and metrics to model and compile it
@@ -75,7 +75,7 @@ plt.title('Training and validation loss')
 plt.legend()
 plt.show()
 
-# Plot predictions against actual values
+# Rita prediktiva mot faktiska värden
 predictions = model.predict(x_test)
 
 plt.clf()
@@ -85,7 +85,7 @@ plt.plot(x_test, predictions, 'r.', label='Prediction')
 plt.legend()
 plt.show()
 
-## Standard Deviation
+# Standardavvikelse
 def variance(predictions):
     n = len(predictions)
     mean = sum(predictions) / n
@@ -99,7 +99,7 @@ def stdev(predictions):
 print("Standard avvikelse")
 print(stdev(predictions))
 
-## calculate the standard deviation of error
+## beräkna standardavvikelsen för felet
 def RSE(x_test, predictions):
 
     # x-test: Actual value
