@@ -1,5 +1,4 @@
 from itertools import count
-
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
@@ -14,7 +13,7 @@ import wandb
 import math
 import numpy as np
 
-#inställningar
+#Inställningar
 nsamples = 1000     # Number of samples to use as a dataset
 val_ratio = 0.2     # Percentage of samples that should be held for validation set
 test_ratio = 0.2    # Percentage of samples that should be held for test set
@@ -26,11 +25,11 @@ np.random.seed(1234)
 x_values = np.random.uniform(low=0, high=(2 * math.pi), size=nsamples)
 plt.plot(x_values)
 
-# Skapa en brusig sinusvåg med dessa värden 
+# Skapa en brusig sinusvåg med dessa värden
 y_values = np.sin(x_values) + (0.1 * np.random.randn(x_values.shape[0]))
 plt.plot(x_values, y_values, '.')
 
-# Split the dataset into training, validation, and test sets
+# Dela upp datasetet i utbildnings-, validerings- och testset
 val_split = int(val_ratio * nsamples)
 test_split = int(val_split + (test_ratio * nsamples))
 x_val, x_test, x_train = np.split(x_values, [val_split, test_split])
@@ -39,7 +38,7 @@ y_val, y_test, y_train = np.split(y_values, [val_split, test_split])
 # Kontrollera att våra uppdelningar summerar korrekt
 assert(x_train.size + x_val.size + x_test.size) == nsamples
 
-# Plot the data in each partition in different colors:
+# Rita in data i varje partition i olika färger:
 plt.plot(x_train, y_train, 'b.', label="Train")
 plt.plot(x_test, y_test, 'r.', label="Test")
 plt.plot(x_val, y_val, 'y.', label="Validate")
@@ -48,22 +47,22 @@ plt.show()
 
 t1_start = time.process_time()
 
-# Create a model
+# Skapa en modell
 model = tf.keras.Sequential()
 model.add(layers.Dense(16, activation='relu', input_shape=(1,)))
 model.add(layers.Dense(16, activation='relu'))
 model.add(layers.Dense(1))
 
-# Visa modell
+# Visa modellen
 model.summary()
 
-# Add optimizer, loss function, and metrics to model and compile it
+# Lägg till optimerare, förlustfunktion och mätvärden för att modellera och kompilera det
 model.compile(optimizer='rmsprop', loss='mae', metrics=['mae'])
 
-# Train model
+# Träna modellen
 history = model.fit(x_train, y_train, epochs=500, batch_size=100, validation_data = (x_val, y_val))
 
-# Plot the training history
+# Rita träning historik
 loss = history.history['loss']
 val_loss = history.history['val_loss']
 
@@ -75,7 +74,7 @@ plt.title('Training and validation loss')
 plt.legend()
 plt.show()
 
-# Rita prediktiva mot faktiska värden
+# Rita förutsägelser mot faktiska värden
 predictions = model.predict(x_test)
 
 plt.clf()
@@ -85,7 +84,7 @@ plt.plot(x_test, predictions, 'r.', label='Prediction')
 plt.legend()
 plt.show()
 
-# Standardavvikelse
+#Standardavvikelse
 def variance(predictions):
     n = len(predictions)
     mean = sum(predictions) / n
@@ -99,7 +98,7 @@ def stdev(predictions):
 print("Standard avvikelse")
 print(stdev(predictions))
 
-## beräkna standardavvikelsen för felet
+#beräkna standardavvikelsen för fel
 def RSE(x_test, predictions):
 
     # x-test: Actual value
